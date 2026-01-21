@@ -69,7 +69,7 @@ class SupportCompiledWireKeys extends ComponentHook
     }
 
     public static function openLoop() {
-        if (static::$currentLoop['count'] === null) {
+        if ((static::$currentLoop['count'] ?? null) === null) {
             static::$currentLoop['count'] = 0;
         } else {
             static::$currentLoop['count']++;
@@ -97,7 +97,11 @@ class SupportCompiledWireKeys extends ComponentHook
     }
 
     public static function closeLoop() {
-        static::$currentLoop = array_pop(static::$loopStack);
+        static::$currentLoop = array_pop(static::$loopStack) ?? [
+            'count' => null,
+            'index' => null,
+            'key' => null,
+        ];
     }
 
     public static function processElementKey($keyString, $data)
